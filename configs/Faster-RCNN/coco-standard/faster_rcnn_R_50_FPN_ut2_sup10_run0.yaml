@@ -26,6 +26,7 @@ SOLVER:
 DATALOADER:
   SUP_PERCENT: 10.0
   RANDOM_DATA_SEED: 21
+  RANDOM_DATA_SEED_PATH: './data_seed.json'
 DATASETS:
   CROSS_DATASET: False
   TRAIN: ("coco_train",)
