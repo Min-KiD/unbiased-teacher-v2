@@ -4,6 +4,7 @@
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
 from detectron2.engine import default_argument_parser, default_setup, launch
+from detectron2.data.datasets import register_coco_instances
 
 # hacky way to register
 from ubteacher.modeling import *
@@ -20,12 +21,22 @@ def setup(args):
     add_ubteacher_config(cfg)
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
+    cfg.DATASETS.TRAIN = ("coco_train",)
+    cfg.DATASETS.TEST = ("coco_val",)
     cfg.freeze()
     default_setup(cfg, args)
     return cfg
 
 
 def main(args):
+    train_ann_file = "/kaggle/working/datasets/coco/annotations/instances_train2017.json"
+    val_ann_file = "/kaggle/working/datasets/coco/annotations/instances_val2017.json"
+    train_path = "/kaggle/working/datasets/coco/train2017"
+    val_path = "/kaggle/working/datasets/coco/val2017"
+    
+    register_coco_instances("coco_train", {}, train_ann_file, train_path)
+    register_coco_instances("coco_val", {}, val_ann_file, val_path)
+
     cfg = setup(args)
     if cfg.SEMISUPNET.Trainer == "ubteacher":
         Trainer = UBTeacherTrainer
