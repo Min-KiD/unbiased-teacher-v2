@@ -10,8 +10,25 @@ from detectron2.data.datasets import register_coco_instances
 from ubteacher.modeling import *
 from ubteacher.engine import *
 from ubteacher import add_ubteacher_config
+import json
+import numpy as np
+import os
 
+def generate_data_seed_file(dataset_size, percentage, seed, output_path):
+    data_seeds = {}
+    num_label = int(percentage / 100.0 * dataset_size)
+    
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
+    np.random.seed(seed)
+    indices = np.random.choice(dataset_size, num_label, replace=False).tolist()
+    data_seeds[str(seed)] = indices
+
+    data_seed_dict = {str(percentage): data_seeds}
+
+    with open(output_path, 'w') as f:
+        json.dump(data_seed_dict, f, indent=4)
 
 def setup(args):
     """
@@ -23,6 +40,7 @@ def setup(args):
     cfg.merge_from_list(args.opts)
     cfg.DATASETS.TRAIN = ("coco_train",)
     cfg.DATASETS.TEST = ("coco_val",)
+    cfg.DATALOADER.RANDOM_DATA_SEED_PATH = './data_seed.json'
     cfg.freeze()
     default_setup(cfg, args)
     return cfg
@@ -36,6 +54,13 @@ def main(args):
     
     register_coco_instances("coco_train", {}, train_ann_file, train_path)
     register_coco_instances("coco_val", {}, val_ann_file, val_path)
+
+    dataset_size = 27358  #
+    percentage = 10
+    seed = 21
+    output_path = './data_seed.json'  # Specify your desired output path
+    
+    generate_data_seed_file(dataset_size, percentage, seed, output_path)
 
     cfg = setup(args)
     if cfg.SEMISUPNET.Trainer == "ubteacher":
