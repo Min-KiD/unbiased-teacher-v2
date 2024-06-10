@@ -37,7 +37,7 @@ def divide_label_unlabel(
     with PathManager.open(random_data_seed_path, "r") as COCO_sup_file:
         coco_random_idx = json.load(COCO_sup_file)
 
-    labeled_idx = np.array(coco_random_idx[str(SupPercent)][str(random_data_seed)])
+    labeled_idx = np.array(coco_random_idx[str(int(SupPercent))][str(random_data_seed)])
     assert labeled_idx.shape[0] == num_label, "Number of READ_DATA is mismatched."
 
     label_dicts = []
