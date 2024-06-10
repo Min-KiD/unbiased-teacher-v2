@@ -18,8 +18,8 @@ MODEL:
     CLS_AGNOSTIC_BBOX_REG: True
 SOLVER:
   LR_SCHEDULER_NAME: "WarmupMultiStepLR"
-  STEPS: (180000,)
-  MAX_ITER: 180000
+  STEPS: (34000,)
+  MAX_ITER: 34000
   IMG_PER_BATCH_LABEL: 32
   IMG_PER_BATCH_UNLABEL: 32
   BASE_LR: 0.01
@@ -28,8 +28,8 @@ DATALOADER:
   RANDOM_DATA_SEED: 0
 DATASETS:
   CROSS_DATASET: False
-  TRAIN: ("coco_2017_train",)
-  TEST: ("coco_2017_val",)
+  TRAIN: ("coco_train",)
+  TEST: ("coco_val",)
 SEMISUPNET:
   Trainer: "ubteacher_rcnn"
   BBOX_THRESHOLD: 0.7
