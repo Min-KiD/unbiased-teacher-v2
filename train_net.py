@@ -55,7 +55,7 @@ def main(args):
     register_coco_instances("coco_train", {}, train_ann_file, train_path)
     register_coco_instances("coco_val", {}, val_ann_file, val_path)
 
-    dataset_size = 27358  #
+    dataset_size = 26126  #
     percentage = 10
     seed = 21
     output_path = './data_seed.json'  # Specify your desired output path
